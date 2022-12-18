@@ -1,0 +1,8 @@
+result
+result/*
+.dep
+.direnv/
+.projectile
+flake.lock
+.ignore
+.projectile

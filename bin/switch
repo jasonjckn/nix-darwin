@@ -1,0 +1,6 @@
+#!/usr/bin/env -S bash -Eeuxo pipefail
+
+THIS_SCRIPT_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+nixos-rbeuild switch -L --refresh --recreate-lock-file --no-write-lock-file "${THIS_SCRIPT_PATH}#darwinConfigurations.$NIX_HOSTNAME.system"
+rm -f ./result

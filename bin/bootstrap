@@ -1,0 +1,22 @@
+#!/usr/bin/env -S bash -Eeuxo pipefail
+
+THIS_SCRIPT_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd $THIS_SCRIPT_PATH/..
+
+nix build -L --refresh --recreate-lock-file --no-write-lock-file ".#darwinConfigurations.$NIX_HOSTNAME.system"
+
+
+cat /etc/synthetic.conf
+echo "APPEND to synthetic.conf  ? "
+echo ------ run	private/var/run
+echo
+echo "(press any key to continue, sudo required)"
+read
+printf 'run\tprivate/var/run\n' | sudo tee -a /etc/synthetic.conf
+/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t
+
+./result/sw/bin/darwin-rebuild switch --flake ".#$NIX_HOSTNAME"
+
+rm -f result
+
+
